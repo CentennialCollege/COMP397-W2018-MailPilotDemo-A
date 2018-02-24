@@ -12,6 +12,7 @@
   let assetManifest: any[];
   let currentScene: objects.Scene;
   let currentState: number;
+  let keyBoardManager: managers.Keyboard;
 
   assetManifest = [
     {id: "clickMeButton", src:"./Assets/images/clickMeButton.png"},
@@ -47,6 +48,9 @@
     objects.Game.stage = stage; // create a reference to the stage
     objects.Game.currentScene = config.Scene.START;
     currentState = config.Scene.START;
+
+    keyBoardManager = new managers.Keyboard();
+    objects.Game.keyboardManager = keyBoardManager;
     Main();
   }
 
