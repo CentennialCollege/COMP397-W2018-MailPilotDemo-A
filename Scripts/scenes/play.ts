@@ -7,7 +7,12 @@ module scenes {
     private _clouds: objects.Cloud[];
     private _cloudNum: number;
 
+    private _engineSound:createjs.AbstractSoundInstance;
+
+    private _scoreBoard: managers.ScoreBoard;
+
     // Public Properties
+
 
     // Constructor
     constructor(assetManager: createjs.LoadQueue) {
@@ -24,6 +29,11 @@ module scenes {
 
     // Initialize Game Variables and objects
     public Start(): void {
+      // setup background sound
+      this._engineSound = createjs.Sound.play("engine");
+      this._engineSound.loop = -1;
+      this._engineSound.volume = 0.3;
+
       this._cloudNum = 3;
       this._ocean = new objects.Ocean(this.assetManager);
       this._plane = new objects.Plane(this.assetManager);
@@ -36,6 +46,9 @@ module scenes {
       for (let count = 0; count < this._cloudNum; count++) {
          this._clouds[count] =  new objects.Cloud(this.assetManager);
       }
+
+      this._scoreBoard = new managers.ScoreBoard();
+      objects.Game.scoreBoardManager = this._scoreBoard;
 
       this.Main();
     }
@@ -54,6 +67,11 @@ module scenes {
         // check collision between pland and the current cloud
         managers.Collision.Check(this._plane, cloud);
       });
+
+      if(this._scoreBoard.Lives <= 0) {
+        this._engineSound.stop();
+        objects.Game.currentScene = config.Scene.OVER;
+      }
     }
 
     // This is where the fun happens
@@ -71,6 +89,12 @@ module scenes {
       this._clouds.forEach(cloud => {
         this.addChild(cloud);
       });
+
+      // add the Lives Label
+      this.addChild(this._scoreBoard.LivesLabel);
+
+      // add the Score Label
+      this.addChild(this._scoreBoard.ScoreLabel);
 
     }
   }

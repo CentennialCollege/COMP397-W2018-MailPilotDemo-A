@@ -23,6 +23,10 @@ var scenes;
         // Public Methods
         // Initialize Game Variables and objects
         PlayScene.prototype.Start = function () {
+            // setup background sound
+            this._engineSound = createjs.Sound.play("engine");
+            this._engineSound.loop = -1;
+            this._engineSound.volume = 0.3;
             this._cloudNum = 3;
             this._ocean = new objects.Ocean(this.assetManager);
             this._plane = new objects.Plane(this.assetManager);
@@ -33,6 +37,8 @@ var scenes;
             for (var count = 0; count < this._cloudNum; count++) {
                 this._clouds[count] = new objects.Cloud(this.assetManager);
             }
+            this._scoreBoard = new managers.ScoreBoard();
+            objects.Game.scoreBoardManager = this._scoreBoard;
             this.Main();
         };
         PlayScene.prototype.Update = function () {
@@ -48,6 +54,10 @@ var scenes;
                 // check collision between pland and the current cloud
                 managers.Collision.Check(_this._plane, cloud);
             });
+            if (this._scoreBoard.Lives <= 0) {
+                this._engineSound.stop();
+                objects.Game.currentScene = config.Scene.OVER;
+            }
         };
         // This is where the fun happens
         PlayScene.prototype.Main = function () {
@@ -62,6 +72,10 @@ var scenes;
             this._clouds.forEach(function (cloud) {
                 _this.addChild(cloud);
             });
+            // add the Lives Label
+            this.addChild(this._scoreBoard.LivesLabel);
+            // add the Score Label
+            this.addChild(this._scoreBoard.ScoreLabel);
         };
         return PlayScene;
     }(objects.Scene));

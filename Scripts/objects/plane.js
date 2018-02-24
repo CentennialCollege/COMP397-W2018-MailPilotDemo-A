@@ -40,17 +40,15 @@ var objects;
             //this.x = objects.Game.stage.mouseX;
             // keyboard controls
             if (objects.Game.keyboardManager.moveLeft) {
-                this.x -= 5;
+                this.x -= 10;
             }
             if (objects.Game.keyboardManager.moveRight) {
-                this.x += 5;
+                this.x += 10;
             }
         };
         Plane.prototype.Start = function () {
+            this.x = 320;
             this.y = 430;
-            var engineSound = createjs.Sound.play("engine");
-            engineSound.loop = -1;
-            engineSound.volume = 0.3;
         };
         // Updates the Object every frame
         Plane.prototype.Update = function () {
