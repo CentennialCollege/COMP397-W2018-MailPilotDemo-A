@@ -1,8 +1,8 @@
 module objects {
   export class GameObject extends createjs.Bitmap {
     // Private Instance Variables
-    private _dy: number;
-    private _dx: number;
+    protected _dy: number;
+    protected _dx: number;
 
     // Public Properties
     public width: number;
