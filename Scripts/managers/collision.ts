@@ -9,10 +9,14 @@ module managers {
 
       // check if there is a collision
       if(math.Vec2.Distance(P1, P2 ) <  (object1.halfHeight + object2.halfHeight) ) {
-          console.log("collision!");
+          if(!object2.isColliding) {
+            console.log("collision with " + object2.name);
+            object2.isColliding = true;
+          }
       }
-
-
+      else {
+        object2.isColliding = false;
+      }
     }
   }
 }

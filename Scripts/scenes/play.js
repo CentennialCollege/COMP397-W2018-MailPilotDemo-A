@@ -36,12 +36,17 @@ var scenes;
             this.Main();
         };
         PlayScene.prototype.Update = function () {
+            var _this = this;
             this._ocean.Update();
             this._plane.Update();
             this._island.Update();
+            // check collision between plane and island
+            managers.Collision.Check(this._plane, this._island);
             // update each cloud
             this._clouds.forEach(function (cloud) {
                 cloud.Update();
+                // check collision between pland and the current cloud
+                managers.Collision.Check(_this._plane, cloud);
             });
         };
         // This is where the fun happens
